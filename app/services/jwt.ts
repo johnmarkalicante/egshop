@@ -1,0 +1,36 @@
+import {
+  Modules
+} from '../config/modules';
+import {
+  CONFIG
+} from '../config/env';
+
+export class Jwt {
+  constructor() {}
+
+  private _modules = Modules.get();
+  private _jories = 'canino';
+
+  encode(_decipher? : any) {
+    let payload = {
+      email         : _decipher.user.email,
+      exp           : this._modules.moment().add(15, 'days').unix()
+    };
+
+    let token = this._modules.jwtsimple.encode(payload, CONFIG.ENCODEDHASH);
+
+    return token;
+  }
+
+  decode(authorization) {
+    return new Promise<any>((resolve, reject) => {
+      if (!authorization) {
+        reject();
+      }
+
+     let token = this._modules.jwtsimple.decode(authorization, CONFIG.ENCODEDHASH);
+
+     resolve(token);
+   });
+  }
+}

@@ -1,0 +1,7 @@
+#!/bin/sh
+ssh canino_jories@107.170.79.170 <<EOF
+ cd /home/canino_jories/Projects/politikoApi
+ git pull
+ yarn install
+ exit
+EOF

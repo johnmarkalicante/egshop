@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<button class="ll">Long Live</button>
+<div class="status"> </div>
+<%= uri %>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+
+  'use strict';
+
+  $(document).on('load', function (e) {
+    function changeLiveToken() {
+      $.ajax({
+        type : 'GET',
+        url  : 'https://graph.facebook.com/oauth/access_token?client_id=178559469337276&client_secret=1a29b69d8cc4122d7e453d8ac3414ea6&fb_exchange_token=EAACiZAh29urwBADH4rOf71wzPdXQzXYJEkZCa79QcWWl7ZCTZC1FUZBhkyBFhYhzOLal3exScTymKUrDBqwCv4RZBGrV3SGbGobPY7XYCdPg8y25pO8xGG47rFbn64OfmbgWAE95xWZAcqZBErgNZAXWFQuX3HOI22GyXd2zQAJGjOetyNsa2mjgfkTzZAeOcdQrwZD&grant_type=fb_exchange_token',
+        success : function (e) {
+          console.log(e);
+        },
+        error : function (e) {
+          console.log(e);
+        }
+      });
+    }
+
+
+    $('.ll').on('click', function (e) {
+      changeLiveToken();
+    });
+  });
+});
+</script>
+</body>
+</html>

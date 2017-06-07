@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Authentication Login</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">FB LOGIN</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li><a nohref> <fb:login-button scope="public_profile,email" onlogin="checkLoginState();"> </fb:login-button> </a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Container here  -->
+  <div class="container">
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+    var accessToken;
+    function statusChangeCallback(response) {
+      console.log('statusChangeCallback');
+      console.log(response);
+
+      if (response.status === 'connected') {
+        accessToken = response.authResponse.accessToken;
+        testAPI();
+      } else {
+      }
+    }
+
+    function checkLoginState() {
+      FB.getLoginStatus(function(response) {
+        statusChangeCallback(response);
+      });
+    }
+
+    window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '178559469337276',
+      cookie     : true,  // enable cookies to allow the server to access
+                          // the session
+      xfbml      : true,  // parse social plugins on this page
+      version    : 'v2.9' // use graph api version 2.8
+    });
+
+
+    FB.getLoginStatus(function(response) {
+      statusChangeCallback(response);
+      console.log(response);
+    });
+
+    };
+
+    // Load the SDK asynchronously
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+
+    function testAPI() {
+      FB.api('/me', { fields: 'id,name,email,picture' }, function(response) {
+        document.cookie = 'u_accessToken=a'+accessToken;
+        // location.href='/fb/account';
+        location.reload();
+        // window.location.href= 'http://localhost:8082/fb/get/token?authToken='+accessToken+'&name='+response.name+'&id='+response.id+'&email='+response.email+'&profile='+response.picture.data.url;
+      });
+    }
+
+    function logOutAcc() {
+      FB.logout(function(response) {
+        document.cookie = 'u_accessToken=; Max-Age=0';
+        location.reload();
+      });
+    }
+
+
+    $(document).ready(function () {
+
+      function getCookie(cn) {
+        var cookiestring=RegExp(""+cn+"[^;]+").exec(document.cookie);
+        return unescape(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "");
+      }
+
+      console.log('Your cookie was => '+getCookie('u_accessToken'));
+    });
+    // Start Login State
+    // checkLoginState();
+  </script>
+
+
+  </body>
+  </html>

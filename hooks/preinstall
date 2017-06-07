@@ -1,0 +1,3 @@
+#!/bin/sh
+yarn global add tslint typescript
+npm run pre-commit
